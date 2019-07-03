@@ -15,7 +15,7 @@ mongo = PyMongo(app)
 APP_URL = "http://127.0.0.1:5000"
 
 
-class Transaction_All(Resource):
+class get_all_transactions(Resource):
     def get(self):
         transactions = mongo.db.transactions.find({})
         output = []
@@ -32,7 +32,7 @@ class Transaction_All(Resource):
 
 
 
-class TransactionById(Resource):
+class get_transaction_by_id(Resource):
     def get(self, id):
         transaction = mongo.db.transactions
 
@@ -54,25 +54,25 @@ class TransactionById(Resource):
 
 class Transaction(Resource):
 #   def get(self):
-#       return ({'name': "get mensagem"}) 
+#       return ({'name': "get message"}) 
 
     def post(self):
-        return ({'name': "post mensagem"})
+        return ({'name': "post message"})
     
     def put(self):
-        return ({'name': "put mensagem"})
+        return ({'name': "put message"})
 
     def delete(self):
-        return ({'name': "delete mensagem"})
+        return ({'name': "delete message"})
 
 class Search(Resource):
     def post(self):
         return ({'name': "search dates"})
 
 api = Api(app)
-api.add_resource(Transaction_All, "/Transactions",  endpoint="transactions")
+api.add_resource(get_all_transactions, "/Transactions",  endpoint="transactions")
 api.add_resource(Transaction, "/Transaction",  endpoint="transaction")
-api.add_resource(TransactionById, "/TransactionById/<int:id>",  endpoint="transactionbyid")
+api.add_resource(get_transaction_by_id, "/TransactionById/<int:id>",  endpoint="transactionbyid")
 api.add_resource(Search, "/Search",  endpoint="search")
 
 
