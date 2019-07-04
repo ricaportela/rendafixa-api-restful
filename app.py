@@ -1,19 +1,16 @@
+import os
 from flask import Flask, jsonify, url_for, redirect, request
 from flask_pymongo import PyMongo
 from flask_restful import Api, Resource
-from bson.json_util import dumps
-import os
 
 
 # USER = config('USER')
 # PASSWD = config('PASSWD')
 
 app = Flask(__name__)
-# app.config['MONGO_URI'] = 'mongodb+srv://'+ USER + ':' + PASSWD + '@cluster0-pgnge.mongodb.net/db_rendafixa?retryWrites=true&w=majority'
 app.config['MONGO_URI'] = 'mongodb+srv://ricaportela:ricaportela@cluster0-pgnge.mongodb.net/db_rendafixa?retryWrites=true&w=majority'
-
 mongo = PyMongo(app)
-APP_URL = "http://0.0.0.0:5000"
+APP_URL = "http://127.0.0.1:5000"
 
 
 class get_all_transactions(Resource):
@@ -35,52 +32,69 @@ class get_all_transactions(Resource):
 
 class get_transaction_by_id(Resource):
     def get(self, id):
-        transaction = mongo.db.transactions
+        data = []
+        if id:
+            transaction_info = mongo.db.transactions.find_one({"id": id}, {"_id": 0})
+            if transaction_info:
+                return jsonify({"status": "ok", "data": transaction_info})
+            else:
+                return {"response": "no transaction found for {}".format(id)}
 
-        q = transaction.find_one({'id' : id})
-
-        if q:
-            output = {'id' : q['id'], 
-                      'data' : q['data'],
-                      'hora' : q['hora'],
-                      'containicial' : q['containicial'],
-                      'contafinal' : q['contafinal'],
-                      'valor' : q['valor']
-                    }
-        else:
-            output = 'No transaction found'
-
-        return jsonify({'result' : output})
+        return jsonify({"response": data})
 
 
-class Transaction(Resource):
-#   def get(self):
-#       return ({'name': "get message"}) 
+
+class Transactions(Resource):
+    #   def get(self):
+    #       return ({'name': "get message"})
 
     def post(self):
-        return ({'name': "post message"})
-    
+        data = request.get_json()
+        if not data:
+            data = {"response": "ERROR"}
+            return jsonify(data)
+        else:
+            transaction = data.get('transaction')
+            if transaction:
+                if mongo.db.transactions.find_one({"transaction": transaction}):
+                    return {"response": "transaction already exists."}
+                else:
+                    mongo.db.transactions.insert(data)
+            else:
+                return {"response": "registration number missing"}
+
+        return redirect(url_for("transaction"))
+
+
     def put(self):
         return ({'name': "put message"})
 
     def delete(self):
         return ({'name': "delete message"})
 
+
+
 class Search(Resource):
     def post(self):
         return ({'name': "search dates"})
 
+
+
+class Index(Resource):
+    def get(self):
+        return redirect(url_for("get_all_transactions"))
+
+
+
 api = Api(app)
-api.add_resource(get_all_transactions, "/Transactions",  endpoint="transactions")
-api.add_resource(Transaction, "/Transaction",  endpoint="transaction")
-api.add_resource(get_transaction_by_id, "/TransactionById/<int:id>",  endpoint="transactionbyid")
+api.add_resource(Index, "/", endpoint="index")
+api.add_resource(get_all_transactions, "/Transactions", endpoint="get_all_transactions")
+api.add_resource(get_transaction_by_id, "/Transactions/<int:id>",  endpoint="transactionbyid")
 api.add_resource(Search, "/Search",  endpoint="search")
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
-
+    app.run(debug=True)
 
 
 """ @app.route('/search', methods=['POST'])
@@ -94,5 +108,3 @@ def filter_entry():
 
     return render_template('result.html', results=results)
  """
-
-
