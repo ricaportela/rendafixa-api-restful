@@ -1,8 +1,6 @@
-# Transacoes
-Getting Started
+# Initial Setup
 ---------------
 
-# Initial Setup
 * Make a new virtualenv: ``python -m venv .venv``
 * Activate the virtualenv: ``source env/bin/activate``
 * Install requirements: ``pip install -r requirements.txt``
