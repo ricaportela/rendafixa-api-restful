@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb+srv://ricaportela:ricaportela@cluster0-pgnge.mongodb.net/db_rendafixa?retryWrites=true&w=majority'
 
 mongo = PyMongo(app)
-APP_URL = "http://127.0.0.1:5000"
+APP_URL = "http://0.0.0.0:5000"
 
 
 class get_all_transactions(Resource):
@@ -77,7 +77,7 @@ api.add_resource(Search, "/Search",  endpoint="search")
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
 
 
 
