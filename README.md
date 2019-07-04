@@ -6,8 +6,8 @@
 * Admin Site at ``http://127.0.0.1:5000/Transactions/`` 
 
 # Test with Curl
-curl -v http://127.0.0.1:5000/get_all_transactions
-curl -v http://127.0.0.1:5000/Transactions/1
+* curl -v http://127.0.0.1:5000/get_all_transactions  
+* curl -v http://127.0.0.1:5000/Transactions/1  
 
 # Unit Tests 
 * should be completed
