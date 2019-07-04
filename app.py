@@ -86,7 +86,7 @@ class Search(Resource):
 api = Api(app)
 api.add_resource(get_all_transactions, "/get_all_transactions", endpoint="get_all_transactions")
 api.add_resource(get_transaction_by_id, "/Transactions/<int:id>",  endpoint="transactionbyid")
-api.add_resource(Transactions, "/Transactions",  endpoint="transactions")
+api.add_resource(Transactions, "/Transactions/",  endpoint="transactions")
 api.add_resource(Search, "/Search",  endpoint="search")
 
 
