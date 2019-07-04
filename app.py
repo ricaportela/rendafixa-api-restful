@@ -2,10 +2,10 @@ from flask import Flask, jsonify, url_for, redirect, request
 from flask_pymongo import PyMongo
 from flask_restful import Api, Resource
 from bson.json_util import dumps
-from decouple import config
 
-USER = config('USER')
-PASSWD = config('PASSWD')
+
+# USER = config('USER')
+# PASSWD = config('PASSWD')
 
 app = Flask(__name__)
 # app.config['MONGO_URI'] = 'mongodb+srv://'+ USER + ':' + PASSWD + '@cluster0-pgnge.mongodb.net/db_rendafixa?retryWrites=true&w=majority'
