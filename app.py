@@ -4,8 +4,6 @@ from flask_pymongo import PyMongo
 from flask_restful import Api, Resource
 
 
-# USER = config('USER')
-# PASSWD = config('PASSWD')
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb+srv://ricaportela:ricaportela@cluster0-pgnge.mongodb.net/db_rendafixa?retryWrites=true&w=majority'
@@ -45,8 +43,6 @@ class get_transaction_by_id(Resource):
 
 
 class Transactions(Resource):
-    #   def get(self):
-    #       return ({'name': "get message"})
 
     def post(self):
         data = request.get_json()
@@ -78,18 +74,18 @@ class Search(Resource):
     def post(self):
         # start = parse(request.form['start'])
         # end = parse(request.form['end'])
-        # cur = mongo.db.transaction.find({'birthdataday': {'$lt': end, '$gte': start}})
+        # cur = mongo.db.transaction.find({'data': {'$lt': end, '$gte': start}})
         # results = []
         # for row in cur:
-        # results.append({"name": row['name'], "birthday": row['birthday'].strftime("%Y/%m/%d")})
+        # results.append({"datas": row['datas'], "data": row['birthday'].strftime("%Y/%m/%d")})
     
-        return ({'name': "search dates"})
+        return ({'datas': "search dates"})
 
 
 
 api = Api(app)
 api.add_resource(get_all_transactions, "/get_all_transactions", endpoint="get_all_transactions")
-api.add_resource(get_transaction_by_id, "/transactions/<int:id>",  endpoint="transactionbyid")
+api.add_resource(get_transaction_by_id, "/Transactions/<int:id>",  endpoint="transactionbyid")
 api.add_resource(Transactions, "/Transactions",  endpoint="transactions")
 api.add_resource(Search, "/Search",  endpoint="search")
 
