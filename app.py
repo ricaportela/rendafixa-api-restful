@@ -54,9 +54,9 @@ class Transactions(Resource):
             data = {"response": "ERROR"}
             return jsonify(data)
         else:
-            transaction = data.get('transaction')
-            if transaction:
-                if mongo.db.transactions.find_one({"transaction": transaction}):
+            id = data.get('id')
+            if id:
+                if mongo.db.transactions.find_one({"id": id}):
                     return {"response": "transaction already exists."}
                 else:
                     mongo.db.transactions.insert(data)
@@ -76,18 +76,18 @@ class Transactions(Resource):
 
 class Search(Resource):
     def post(self):
+        # start = parse(request.form['start'])
+        # end = parse(request.form['end'])
+        # cur = mongo.db.transaction.find({'birthdataday': {'$lt': end, '$gte': start}})
+        # results = []
+        # for row in cur:
+        # results.append({"name": row['name'], "birthday": row['birthday'].strftime("%Y/%m/%d")})
+    
         return ({'name': "search dates"})
 
 
 
-class Index(Resource):
-    def get(self):
-        return redirect(url_for("get_all_transactions"))
-
-
-
 api = Api(app)
-api.add_resource(Index, "/", endpoint="index")
 api.add_resource(get_all_transactions, "/get_all_transactions", endpoint="get_all_transactions")
 api.add_resource(get_transaction_by_id, "/transactions/<int:id>",  endpoint="transactionbyid")
 api.add_resource(Transactions, "/Transactions",  endpoint="transactions")
@@ -96,16 +96,3 @@ api.add_resource(Search, "/Search",  endpoint="search")
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-""" @app.route('/search', methods=['POST'])
-def filter_entry():
-    start = parse(request.form['start'])
-    end = parse(request.form['end'])
-    cur = mongo.db.transaction.find({'birthday': {'$lt': end, '$gte': start}})
-    results = []
-    for row in cur:
-        results.append({"name": row['name'], "birthday": row['birthday'].strftime("%Y/%m/%d")})
-
-    return render_template('result.html', results=results)
- """
